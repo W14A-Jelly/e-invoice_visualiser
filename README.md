@@ -36,6 +36,6 @@ Frontend of application
 
 * Elise: Mark unread e-invoice, /list/filenames/, Blacklist sender
 
-* Zijie: Filter e-invoices, File management system, Store information of sender to database, Add home page to deployed API
+* Zijie: Filter e-invoices, File management system, Store information of sender to database, Add home page to deployed API, update /clear
 
 * Kian: Accounts, SMS, Send error communication report, /list/filter/
