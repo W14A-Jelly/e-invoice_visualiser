@@ -13,14 +13,6 @@ registrationForm.addEventListener('submit', (event) =>
     let xhr = new XMLHttpRequest();
     // open a connection
     xhr.open("POST", url, true);
-    // Create a state change callback
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            // Print received data from server
-            result.innerHTML = this.responseText;
-
-        }
-    };
     // Converting JSON data to string
     var data = JSON.stringify({ "email": email, "password": password });
     // Sending data with the request
