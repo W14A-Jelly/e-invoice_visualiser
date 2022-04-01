@@ -2,8 +2,8 @@ let registrationForm = document.forms.registration_form;
 
 registrationForm.addEventListener('submit', (event) =>
  {
-    const email = registrationForm.elements.business_email_input.value
-    const password = registrationForm.elements.email_password_input.value
+    const email = registrationForm.elements.email_input.value
+    const password = registrationForm.elements.password_input.value
 
     console.log(email)
     console.log(password)
@@ -13,6 +13,7 @@ registrationForm.addEventListener('submit', (event) =>
     let xhr = new XMLHttpRequest();
     // open a connection
     xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type","application/json");
     // Converting JSON data to string
     var data = JSON.stringify({ "email": email, "password": password });
     // Sending data with the request

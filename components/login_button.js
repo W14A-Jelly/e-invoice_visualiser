@@ -11,6 +11,7 @@ loginForm.addEventListener('submit', (event) =>
     // open a connection
     xhr.open("POST", url, true);
     // Converting JSON data to string
+    xhr.setRequestHeader("Content-Type","application/json");
     var data = JSON.stringify({ "email": email, "password": password });
     // Sending data with the request
     xhr.send(data);
