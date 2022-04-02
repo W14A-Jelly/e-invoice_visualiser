@@ -3,40 +3,49 @@ import { styled } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import logo from './img/logo.png'
 
-const BigButton = styled(Button)({
+const CusButton = styled(Button)({
     width: '220px',
 })
+
+const CusTextField = styled(TextField)({
+  backgroundColor: 'white'
+})
+
 
 class Login extends React.Component {
     render() {
       return (
-        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}} className='Login'>
-          <div className='About'>
-          </div>
-          <div className='Input'>
-            <p>
-              <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              defaultValue="Email"
-              />
-            </p>
-            <p>
-              <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              defaultValue="Password"
-              />
-            </p>
-            <p>
-              <BigButton variant="contained">Login</BigButton>
-            </p>
-            <p>
-              <BigButton variant="contained">Register</BigButton>
-            </p>
+        <div className='background' style={{backgroundColor: '#90caf9', height: '100vh'}}>
+          <img src={logo} alt="logo"  width="200" height="150"/>
+          <div className='Login' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '60vh'}}>
+            <Box component="span" sx={{ p: 4, backgroundColor: 'white' }}>
+              <div className='About'>
+              </div>
+              <div className='Input'>
+                <p>
+                  <CusTextField
+                  required
+                  id="outlined-required"
+                  label="Email"
+                  />
+                </p>
+                <p>
+                  <CusTextField
+                  required
+                  id="outlined-required"
+                  label="Password"
+                  />
+                </p>
+                <p>
+                  <CusButton variant="contained">Login</CusButton>
+                </p>
+                <p>
+                  <CusButton variant="contained">Register</CusButton>
+                </p>
+              </div>
+            </Box>
           </div>
         </div>
       );
