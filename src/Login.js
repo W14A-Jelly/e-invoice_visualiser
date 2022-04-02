@@ -61,6 +61,7 @@ const Login2 = () => {
   const [logged, setlogged] = useState(0)
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
+  //change it later
   const[token, settoken] = useState();
 
   // async function login() {
@@ -103,6 +104,11 @@ const Login2 = () => {
       .catch((err)=>{ })
     
   }
+
+  function go_register(event) {
+    window.location.href = ('/register')
+    
+  }
   return (
     <div className='background' style={{ backgroundColor: '#90caf9', height: '100vh' }}>
       <div style={{ position: 'relative', top: '80px' }}>
@@ -134,7 +140,7 @@ const Login2 = () => {
               <CusButton type="submit" variant="contained" onClick={handleLogin}>Sign in</CusButton>
             </p>
             <p>
-              <CusButton variant="contained">Register</CusButton>
+              <CusButton variant="contained" onClick = {go_register} >Register</CusButton>
             </p>
           </div>
         </Box>
