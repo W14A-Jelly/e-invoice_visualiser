@@ -24,6 +24,7 @@ class Login extends React.Component {
               <div className='About'>
               </div>
               <div className='Input'>
+              <div style={{fontSize: '25px', position:'relative', bottom:'10px'}}>Login</div>
                 <p>
                   <CusTextField
                   required
@@ -39,7 +40,7 @@ class Login extends React.Component {
                   />
                 </p>
                 <p>
-                  <CusButton variant="contained">Login</CusButton>
+                  <CusButton variant="contained">Sign in</CusButton>
                 </p>
                 <p>
                   <CusButton variant="contained">Register</CusButton>
