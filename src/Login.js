@@ -18,7 +18,9 @@ class Login extends React.Component {
     render() {
       return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh'}}>
-          <img src={logo} alt="logo"  width="200" height="150"/>
+          <div style={{position:'relative', top:'80px'}}>
+            <img src={logo} alt="logo"  width="200" height="150"/>
+          </div>
           <div className='Login' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '60vh'}}>
             <Box component="span" sx={{ p: 4, backgroundColor: 'white' }}>
               <div className='About'>
