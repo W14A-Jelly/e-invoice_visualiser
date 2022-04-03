@@ -126,6 +126,10 @@ const File = () => {
         localStorage.token = ''
     }
 
+    function go_filter(event) {
+        window.location.href = ('/Filter')
+    }
+
     function handlestart(event) {
         event.preventDefault();
         //valid if empty
@@ -158,9 +162,9 @@ const File = () => {
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
             <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
-                <div className='filter' style={{position:'relative', bottom:'450px', left:'100px', zIndex:3}}>
+                <div className='filter' style={{position:'relative', bottom:'480px', left:'100px', zIndex:3}}>
                     <FormGroup>
-                        <FormControlLabel control={<Switch color="warning"/>} label= "Filter" />
+                    <FormControlLabel control={<Switch color="warning" onClick={() => {go_filter()}} />} label="Filter" />
                     </FormGroup>
                 </div>
                 <Box component="span" sx={{width: '90vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>

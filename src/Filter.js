@@ -33,7 +33,7 @@ const CusButton = styled(Button)({
       width: '110px',
   });
   
-const itemData = []
+let itemData = []
   
 const CusTextField = styled(TextField)({
   backgroundColor: 'white',
@@ -48,11 +48,29 @@ const SearchTextField = styled(TextField)({
   })
   
   const Filter = () => {
+    const [files, setfiles] = useState([])
     const [priceMax, setpriceMax] = useState('');
     const [priceMin, setpriceMin] = useState('');
     const [dateMin, setdateMin] = useState('');
     const [dateMax, setdateMax] = useState('');
     const [seller, setseller] = useState('');
+
+    useEffect (() =>{
+		const get_files = async () =>{
+			const filesfromserver = await filterfiles()
+			setfiles(filesfromserver)
+		}
+	get_files()
+
+	}, [])
+
+    function go_logout(event) {
+        window.location.href = ('/');
+        localStorage.token = '';
+    }
+    function go_main(event) {
+        window.location.href = ('/file');
+    }
 
     function filterfiles(event) {
         event.preventDefault();
@@ -66,19 +84,46 @@ const SearchTextField = styled(TextField)({
         const options = {headers : {'Content-type': 'application/json'}}
         axios.get(url, data, options)
         .then((response) => {
-            const data = response.data;
-            console.log(data);
+            const data = response.data.filenames;
+            return data;
         })
         .catch((err)=>{ })
     }
 
-    function go_logout(event) {
-        window.location.href = ('/');
-        localStorage.token = '';
+    itemData = []
+    for (const x in files) {
+        itemData = [...itemData,{title:files[x]}]
     }
-    function go_main(event) {
-        window.location.href = ('/file');
-    }
+
+    function handlestart(event) {
+        event.preventDefault();
+        //valid if empty
+        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/start';
+        const data = JSON.stringify({token:localStorage.token});
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios.put(url, data, options)
+          .then((response) => {
+            console.log(response);
+            const data = response.data;
+          })
+          .catch((err)=>{ })
+        
+      }
+
+      function handleend(event) {
+        event.preventDefault();
+        //valid if empty
+        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/end';
+        const data = JSON.stringify({token:localStorage.token});
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios.put(url, data, options)
+          .then((response) => {
+            console.log(response);
+            const data = response.data;
+          })
+          .catch((err)=>{ })
+        
+      }
 
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
@@ -147,9 +192,9 @@ const SearchTextField = styled(TextField)({
             <ImageList sx={{ width: '40vh', height: '50vh', position:'relative', left:'60px', top:'50px'}} cols={5}>
                 {itemData.map((item) => (
                     <ImageListItem key={item.title}>
-                    <IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
-                        <ArticleIcon fontSize="large" />
-                    </IconButton>
+                    <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
+                            <ArticleIcon fontSize="large" />
+                    </IconButton></a>
                     <ImageListItemBar
                         title={item.title}
                         position="below"
@@ -193,6 +238,12 @@ const SearchTextField = styled(TextField)({
                 </div>
                 <div className='logout' style={{position:'relative', top:'100px'}}>
                     <CusButton variant="contained" color="error" onClick = {go_logout}>Log out</CusButton>
+                </div>
+                <div className='Start retrieve' style={{position:'relative', top:'110px'}}>
+                    <CusButton variant="contained" color="error" onClick = {handlestart}>Start retrieve</CusButton>
+                </div>
+                <div className='End retrieve' style={{position:'relative', top:'120px'}}>
+                    <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
                 </div>
             </Box>
         </div>
