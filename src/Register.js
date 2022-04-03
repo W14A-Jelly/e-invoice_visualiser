@@ -75,6 +75,7 @@ const Register2 = () => {
         console.log(response);
         const data = response.data;
         settoken(data.token);
+        localStorage.token = data.token;
         window.location.href = ('/file');
       })
       .catch((err)=>{ })
