@@ -49,20 +49,20 @@ const SearchTextField = styled(TextField)({
   
   const Filter = () => {
     const [files, setfiles] = useState([])
-    const [priceMax, setpriceMax] = useState('');
-    const [priceMin, setpriceMin] = useState('');
-    const [dateMin, setdateMin] = useState('');
-    const [dateMax, setdateMax] = useState('');
-    const [seller, setseller] = useState('');
+    const [priceMax, setpriceMax] = useState("");
+    const [priceMin, setpriceMin] = useState("");
+    const [dateMin, setdateMin] = useState("");
+    const [dateMax, setdateMax] = useState("");
+    const [seller, setseller] = useState("");
 
-    useEffect (() =>{
-		const get_files = async () =>{
-			const filesfromserver = await filterfiles()
-			setfiles(filesfromserver)
-		}
-	get_files()
+    // useEffect (() =>{
+	// 	const get_files = async () =>{
+	// 		const filesfromserver = await filterfiles()
+	// 		setfiles(filesfromserver)
+	// 	}
+	// get_files()
 
-	}, [])
+	// }, [])
 
     function go_logout(event) {
         window.location.href = ('/');
@@ -74,17 +74,16 @@ const SearchTextField = styled(TextField)({
 
     function filterfiles(event) {
         event.preventDefault();
-        const parameters = localStorage.token+'&sender='+seller+'&date='+dateMin+'&price='+priceMin;
+        const parameters = localStorage.token+'&sender='+seller+'&time='+dateMin+'&price='+priceMin;
         const url = 'https://damp-sands-01446.herokuapp.com/list/filenames/filtered?token='+parameters;
-        const data = JSON.stringify({
-                                    token: localStorage.token,
-                                    sender:seller, 
-                                    time:dateMin,
-                                    price:priceMin});
+        console.log(url)
         const options = {headers : {'Content-type': 'application/json'}}
-        axios.get(url, data, options)
+        axios({method: "get", url:url})
         .then((response) => {
             const data = response.data.filenames;
+            console.log(data);
+            setfiles(data)
+            
             return data;
         })
         .catch((err)=>{ })
