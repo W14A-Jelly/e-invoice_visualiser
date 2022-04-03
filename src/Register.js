@@ -59,7 +59,6 @@ const Register2 = () => {
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   //change it later
-  const[token, settoken] = useState();
   function back_to_login(event) {
     window.location.href = ('/')
   }
@@ -74,8 +73,7 @@ const Register2 = () => {
       .then((response) => {
         console.log(response);
         const data = response.data;
-        settoken(data.token);
-        localStorage.token = data.token;
+        localStorage.token = data.token
         window.location.href = ('/file');
       })
       .catch((err)=>{ })

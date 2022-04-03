@@ -17,7 +17,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {Link} from 'react-router-dom';
-
+import axios from 'axios';
 const style = {
   width: '100%',
   height: '100',
@@ -107,12 +107,12 @@ const File = () => {
 
 	const fetchfiles = async () => {
         //change url later
-        const url = 'https://damp-sands-01446.herokuapp.com/list/filenames?token='+localStorage.token
-        console.log(localStorage.token)
-		// const response = await fetch(url)
-		const response = await fetch('http://192.168.1.184:8080/example?token='+localStorage.token)
-		const data = (await response.json()).files
-        console.log(response)
+        const url = 'https://damp-sands-01446.herokuapp.com/list/filenames?token='+localStorage.token;
+        //const url = 'http://192.168.1.184:8080/example'
+        console.log(url);
+		const response = await fetch(url);
+		//const response = await fetch('http://192.168.1.184:8080/example?token='+localStorage.token)
+		const data = (await response.json()).filenames
 		return data
 	}
 	itemData = []
@@ -120,17 +120,47 @@ const File = () => {
         itemData = [...itemData,{title:files[x]}]
     }
 
+
     function go_logout(event) {
         window.location.href = ('/')
         localStorage.token = ''
     }
 
+    function handlestart(event) {
+        event.preventDefault();
+        //valid if empty
+        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/start';
+        const data = JSON.stringify({token:localStorage.token});
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios.put(url, data, options)
+          .then((response) => {
+            console.log(response);
+            const data = response.data;
+          })
+          .catch((err)=>{ })
+        
+      }
+
+      function handleend(event) {
+        event.preventDefault();
+        //valid if empty
+        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/end';
+        const data = JSON.stringify({token:localStorage.token});
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios.put(url, data, options)
+          .then((response) => {
+            console.log(response);
+            const data = response.data;
+          })
+          .catch((err)=>{ })
+        
+      }
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
             <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
                 <div className='filter' style={{position:'relative', bottom:'450px', left:'100px', zIndex:3}}>
                     <FormGroup>
-                        <FormControlLabel control={<Switch color="warning"/>} label="Filter" />
+                        <FormControlLabel control={<Switch color="warning"/>} label= "Filter" />
                     </FormGroup>
                 </div>
                 <Box component="span" sx={{width: '90vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>
@@ -139,7 +169,7 @@ const File = () => {
                     {itemData.map((item) => (
                         //repalce the href with https://peaceful-headland-84816.herokuapp.com/static/render+ {item.title}.jpg
                         <ImageListItem key={item.title}>
-                        <a href = "https://www.google.com.au"><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
+                        <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
                             <ArticleIcon fontSize="large" />
                         </IconButton></a>
                         <ImageListItemBar
@@ -185,6 +215,12 @@ const File = () => {
                     </div>
                     <div className='logout' style={{position:'relative', top:'100px'}}>
                         <CusButton variant="contained" color="error" onClick = {go_logout}>Log out</CusButton>
+                    </div>
+                    <div className='Start retrieve' style={{position:'relative', top:'110px'}}>
+                        <CusButton variant="contained" color="error" onClick = {handlestart}>Start retrieve</CusButton>
+                    </div>
+                    <div className='End retrieve' style={{position:'relative', top:'120px'}}>
+                        <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
                     </div>
                 </Box>
             </div>

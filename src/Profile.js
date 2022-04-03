@@ -82,7 +82,7 @@ const Profile = () => {
       function updategmailr(event) {
         event.preventDefault();
         //valid if empty
-        if (!password) return;
+        if (!gmailr||!apppass) return;
         const url = 'https://damp-sands-01446.herokuapp.com/email/set';
         const data = JSON.stringify({email:gmailr, email_pass:apppass, token:localStorage.token});
         const options = {headers : {'Content-type': 'application/json'}}
@@ -90,8 +90,7 @@ const Profile = () => {
           .then((response) => {
             console.log(response);
             const data = response.data;
-            localStorage.token = ''
-            window.location.href = ('/');
+            window.location.href = ('/File');
           })
           .catch((err)=> {})
       }
