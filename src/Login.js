@@ -60,13 +60,10 @@ class Login extends React.Component {
 
 
 const Login2 = () => {
-  
   const [logged, setlogged] = useState(0)
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   //change it later
-  const[token, settoken] = useState();
-
   // async function login() {
   //   const res = await fetch('https://peaceful-headland-84816.herokuapp.com/user/login', {
   //     method: 'POST',
@@ -101,7 +98,9 @@ const Login2 = () => {
         console.log(response);
         const data = response.data;
         setlogged(true);
-        settoken(data.token);
+        localStorage.token = data.token;
+        console.log('from login')
+        console.log(localStorage.token)
         window.location.href = ('/file');
       })
       .catch((err)=>{ })
