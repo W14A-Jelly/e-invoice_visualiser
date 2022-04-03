@@ -95,6 +95,7 @@ const Register2 = () => {
               required
               id="outlined-required"
               label="Email"
+              defaultValue=""
               onChange={e => setemail(e.target.value)}
               />
             </p>
@@ -103,6 +104,8 @@ const Register2 = () => {
               required
               id="outlined-required"
               label="Password"
+              type="password"
+              defaultValue=""
               onChange={e => setpassword(e.target.value)}
               />
             </p>
