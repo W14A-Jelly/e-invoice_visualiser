@@ -37,6 +37,7 @@ class Register extends React.Component {
                   <CusTextField
                   required
                   id="outlined-required"
+                  type="password"
                   label="Password"
                   />
                 </p>

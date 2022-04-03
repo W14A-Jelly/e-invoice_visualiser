@@ -32,13 +32,16 @@ class Login extends React.Component {
                   required
                   id="outlined-required"
                   label="Email"
+                  defaultValue=""
                 />
               </p>
               <p>
                 <CusTextField
                   required
                   id="outlined-required"
+                  type="password"
                   label="Password"
+                  defaultValue=""
                 />
               </p>
               <p>
@@ -108,6 +111,7 @@ const Login2 = () => {
                 required
                 id="outlined-required"
                 label="Email"
+                defaultValue=""
                 onChange={e => setemail(e.target.value)}
               />
             </p>
@@ -116,6 +120,8 @@ const Login2 = () => {
                 required
                 id="outlined-required"
                 label="Password"
+                type="password"
+                defaultValue=""
                 onChange={e => setpassword(e.target.value)}
               />
             </p>
