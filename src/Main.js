@@ -122,9 +122,10 @@ const File = () => {
                 <ImageList sx={{ width: '80vh', height: '60vh', position:'relative', left:'60px', top:'50px'}} cols={10}>
                     {itemData.map((item) => (
                         <ImageListItem key={item.title}>
-                        <IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
+                        // change links later
+                        <a href = "https://www.google.com.au"><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
                             <ArticleIcon fontSize="large" />
-                        </IconButton>
+                        </IconButton></a>
                         <ImageListItemBar
                             title={item.title}
                             position="below"
