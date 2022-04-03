@@ -12,6 +12,9 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import ArticleIcon from '@mui/icons-material/Article';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 const style = {
   width: '100%',
@@ -35,7 +38,13 @@ class Main extends React.Component {
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
             <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
+                <div className='filter' style={{position:'absolute', bottom:'1100px', left:'275px', zIndex:3}}>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch color="warning"/>} label="Filter" />
+                    </FormGroup>
+                </div>
                 <Box component="span" sx={{width: '90vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>
+                <div style={{fontSize: '25px', position:'absolute', top:'210px', left:'335px', zIndex:3}}>Invoices</div>
                 <ImageList sx={{ width: '80vh', height: '60vh', position:'relative', left:'60px', top:'50px'}} cols={10}>
                     {itemData.map((item) => (
                         <ImageListItem key={item.title}>
