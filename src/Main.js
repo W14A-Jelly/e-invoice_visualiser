@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -15,6 +16,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import {Link} from 'react-router-dom';
 
 const style = {
   width: '100%',
@@ -105,7 +107,7 @@ const File = () => {
 
 	const fetchfiles = async () => {
         //change url later
-        const url = 'https://peaceful-headland-84816.herokuapp.com/list/filenames?token='+localStorage.token
+        const url = 'https://damp-sands-01446.herokuapp.com/list/filenames?token='+localStorage.token
         console.log(localStorage.token)
 		// const response = await fetch(url)
 		const response = await fetch('http://192.168.1.184:8080/example?token='+localStorage.token)
@@ -126,11 +128,17 @@ const File = () => {
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
             <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
+                <div className='filter' style={{position:'relative', bottom:'450px', left:'100px', zIndex:3}}>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch color="warning"/>} label="Filter" />
+                    </FormGroup>
+                </div>
                 <Box component="span" sx={{width: '90vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>
+                <div style={{fontSize: '25px', position:'relative', right:'450px', top:'50px', zIndex:4}}>Invoices</div>
                 <ImageList sx={{ width: '80vh', height: '60vh', position:'relative', left:'60px', top:'50px'}} cols={10}>
                     {itemData.map((item) => (
+                        //repalce the href with https://peaceful-headland-84816.herokuapp.com/static/render+ {item.title}.jpg
                         <ImageListItem key={item.title}>
-                        // change links later
                         <a href = "https://www.google.com.au"><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
                             <ArticleIcon fontSize="large" />
                         </IconButton></a>
@@ -150,24 +158,33 @@ const File = () => {
                     </div>
                     <div className='list'>
                         <List sx={style} component="nav" aria-label="mailbox folders">
-                        <ListItem button>
-                            <ListItemText  primary="Profile" />
-                        </ListItem>
+                        <Link to = "/Profile">
+                            <ListItem>
+                                <ListItemText  primary="Profile" />
+                            </ListItem>
+                        </Link>
                         <Divider />
-                        <ListItem button divider>
-                            <ListItemText primary="Invoices" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemText primary="Reports" />
-                        </ListItem>
+                        <Link to = "/File">
+                            <ListItem button divider>
+                                <ListItemText primary="Invoices" />
+                            </ListItem>
+                        </Link>
+                        
+                        <Link to = "/Reports">
+                            <ListItem button>
+                                <ListItemText primary="Reports" />
+                            </ListItem>
+                        </Link>
                         <Divider  light />
-                        <ListItem button>
-                            <ListItemText primary="Blacklist" />
-                        </ListItem>
+                        <Link to = "/Blacklist">
+                            <ListItem button>
+                                <ListItemText primary="Blacklist" />
+                            </ListItem>
+                        </Link>
                         </List>
                     </div>
                     <div className='logout' style={{position:'relative', top:'100px'}}>
-                        <CusButton variant="contained" color="error" onClick={go_logout}>Log out</CusButton>
+                        <CusButton variant="contained" color="error" onClick = {go_logout}>Log out</CusButton>
                     </div>
                 </Box>
             </div>
@@ -177,3 +194,4 @@ const File = () => {
 }
 
 export default File;
+

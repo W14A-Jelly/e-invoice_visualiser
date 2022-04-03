@@ -67,7 +67,7 @@ const Register2 = () => {
     event.preventDefault();
     //valid if empty
     if (!email || !password) return;
-    const url = 'https://peaceful-headland-84816.herokuapp.com/user/register';
+    const url = 'https://damp-sands-01446.herokuapp.com/user/register';
     const data = JSON.stringify({email:email, password:password});
     const options = {headers : {'Content-type': 'application/json'}}
     axios.post(url, data, options)

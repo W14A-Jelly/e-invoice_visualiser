@@ -10,7 +10,8 @@ import {
 import Login2 from './Login'
 import Register2 from './Register';
 import Main from './Main'
-
+import Profile from './Profile'
+import Filter from './Filter'
 
 function App() {
 
@@ -21,6 +22,8 @@ function App() {
           <Route path = "/" element = {<Login2/>} />
           <Route path = "/register" element = {<Register2/>} />
           <Route path = "/file" element = {<Main/>} />
+          <Route path = "/profile" element = {<Profile/>} />
+          <Route path = "/Filter" element = {<Filter/>} />
         </Routes>
       </BrowserRouter>
     </div>
