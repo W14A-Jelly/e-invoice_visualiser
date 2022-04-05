@@ -107,36 +107,6 @@ const Profile = () => {
         window.location.href = ('/file')
     }
 
-    function handlestart(event) {
-        event.preventDefault();
-        //valid if empty
-        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/start';
-        const data = JSON.stringify({token:localStorage.token});
-        const options = {headers : {'Content-type': 'application/json'}}
-        axios.put(url, data, options)
-          .then((response) => {
-            console.log(response);
-            const data = response.data;
-          })
-          .catch((err)=>{ })
-        
-      }
-
-      function handleend(event) {
-        event.preventDefault();
-        //valid if empty
-        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/end';
-        const data = JSON.stringify({token:localStorage.token});
-        const options = {headers : {'Content-type': 'application/json'}}
-        axios.put(url, data, options)
-          .then((response) => {
-            console.log(response);
-            const data = response.data;
-          })
-          .catch((err)=>{ })
-        
-      }
-
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
         <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
@@ -211,12 +181,6 @@ const Profile = () => {
                         <ListItemText primary="Blacklist" />
                     </ListItem>
                     </List>
-                </div>
-                <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
-                    <CusButton variant="contained" color="success" onClick = {handlestart}>Start retrieve</CusButton>
-                </div>
-                <div className='End retrieve' style={{position:'relative', top:'130px'}}>
-                    <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
                 </div>
                 <div className='logout' style={{position:'relative', top:'700px'}}>
                     <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>

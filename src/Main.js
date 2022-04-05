@@ -96,6 +96,8 @@ class Main extends React.Component {
 
 const File = () => {
     const [files, setfiles] = useState([])
+    const [btnState, setBtn] = useState(false)
+
 	useEffect (() =>{
 		const get_files = async () =>{
 			const filesfromserver = await fetchfiles()
@@ -119,7 +121,6 @@ const File = () => {
     for (const x in files) {
         itemData = [...itemData,{title:files[x]}]
     }
-
 
     function go_logout(event) {
         window.location.href = ('/')
@@ -149,6 +150,7 @@ const File = () => {
           .then((response) => {
             console.log(response);
             const data = response.data;
+            setBtn(true);
           })
           .catch((err)=>{ })
         
@@ -164,6 +166,7 @@ const File = () => {
           .then((response) => {
             console.log(response);
             const data = response.data;
+            setBtn(false);
           })
           .catch((err)=>{ })
         
@@ -219,10 +222,10 @@ const File = () => {
                         </List>
                     </div>
                     <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
-                        <CusButton variant="contained" color="success" onClick = {handlestart}>Start retrieve</CusButton>
+                        <CusButton variant="contained" disabled={btnState} color="success" onClick = {handlestart}>Start retrieve</CusButton>
                     </div>
                     <div className='End retrieve' style={{position:'relative', top:'130px'}}>
-                        <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
+                        <CusButton variant="contained" disabled={!btnState} color="error" onClick = {handleend}>End retrieve</CusButton>
                     </div>
                     <div className='logout' style={{position:'relative', top:'700px'}}>
                         <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
