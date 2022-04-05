@@ -152,7 +152,7 @@ const File = () => {
             const data = response.data;
             setBtn(true);
           })
-          .catch((err)=>{ })
+          .catch((err)=>{})
         
       }
 
