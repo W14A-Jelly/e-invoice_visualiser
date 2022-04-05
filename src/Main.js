@@ -130,6 +130,15 @@ const File = () => {
         window.location.href = ('/Filter')
     }
 
+    function go_profile(event) {
+        window.location.href = ('/profile')
+    }
+
+    function go_invoice(event) {
+        window.location.href = ('/file')
+    }
+
+
     function handlestart(event) {
         event.preventDefault();
         //valid if empty
@@ -192,39 +201,31 @@ const File = () => {
                     </div>
                     <div className='list'>
                         <List sx={style} component="nav" aria-label="mailbox folders">
-                        <Link to = "/Profile">
-                            <ListItem>
-                                <ListItemText  primary="Profile" />
-                            </ListItem>
-                        </Link>
+                        <ListItem button onClick = {go_profile}>
+                            <ListItemText  primary="Profile" />
+                        </ListItem>
                         <Divider />
-                        <Link to = "/File">
-                            <ListItem button divider>
+                            <ListItem button onClick = {go_invoice}>
                                 <ListItemText primary="Invoices" />
                             </ListItem>
-                        </Link>
-                        
-                        <Link to = "/Reports">
+                        <Divider />
                             <ListItem button>
                                 <ListItemText primary="Reports" />
                             </ListItem>
-                        </Link>
-                        <Divider  light />
-                        <Link to = "/Blacklist">
-                            <ListItem button>
-                                <ListItemText primary="Blacklist" />
-                            </ListItem>
-                        </Link>
+                        <Divider />
+                        <ListItem button>
+                            <ListItemText primary="Blacklist" />
+                        </ListItem>
                         </List>
                     </div>
-                    <div className='logout' style={{position:'relative', top:'100px'}}>
-                        <CusButton variant="contained" color="error" onClick = {go_logout}>Log out</CusButton>
+                    <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
+                        <CusButton variant="contained" color="success" onClick = {handlestart}>Start retrieve</CusButton>
                     </div>
-                    <div className='Start retrieve' style={{position:'relative', top:'110px'}}>
-                        <CusButton variant="contained" color="error" onClick = {handlestart}>Start retrieve</CusButton>
-                    </div>
-                    <div className='End retrieve' style={{position:'relative', top:'120px'}}>
+                    <div className='End retrieve' style={{position:'relative', top:'130px'}}>
                         <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
+                    </div>
+                    <div className='logout' style={{position:'relative', top:'700px'}}>
+                        <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
                     </div>
                 </Box>
             </div>

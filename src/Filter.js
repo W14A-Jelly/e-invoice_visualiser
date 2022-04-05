@@ -68,8 +68,13 @@ const SearchTextField = styled(TextField)({
         window.location.href = ('/');
         localStorage.token = '';
     }
-    function go_main(event) {
-        window.location.href = ('/file');
+
+    function go_profile(event) {
+        window.location.href = ('/profile')
+    }
+
+    function go_invoice(event) {
+        window.location.href = ('/file')
     }
 
     function filterfiles(event) {
@@ -129,7 +134,7 @@ const SearchTextField = styled(TextField)({
         <div className='middle_panel' style={{display: 'flex', position:'absolute', alignItems: 'center', justifyContent:'left', left:'420px', top:'190px', zIndex:2}}>
             <div className='filter' style={{position:'absolute', bottom:'460px', zIndex:3}}>
                 <FormGroup>
-                    <FormControlLabel control={<Switch defaultChecked color="warning" onClick={() => {go_main()}} />} label="Filter" />
+                    <FormControlLabel control={<Switch defaultChecked color="warning" onClick={() => {go_invoice()}} />} label="Filter" />
                 </FormGroup>
             </div>
             <Box component="span" sx={{width: '35vh', height: '35vh', backgroundColor: 'white', zIndex:2}}>
@@ -173,7 +178,7 @@ const SearchTextField = styled(TextField)({
                 <span style={{fontSize: '20px', top: '230px', left: '50px', position:'absolute', zIndex:5}}>Seller</span>
                 <SearchTextField
                 id="filled-search"
-                label="Text"
+                label="Name"
                 type="Search"
                 variant="filled"
                 onChange={e => setseller(e.target.value)}
@@ -210,39 +215,31 @@ const SearchTextField = styled(TextField)({
                 </div>
                 <div className='list'>
                     <List sx={style} component="nav" aria-label="mailbox folders">
-                    <Link to = "/Profile">
-                            <ListItem>
-                                <ListItemText  primary="Profile" />
-                            </ListItem>
-                        </Link>
-                        <Divider />
-                        <Link to = "/File">
-                            <ListItem button divider>
-                                <ListItemText primary="Invoices" />
-                            </ListItem>
-                        </Link>
-                        
-                        <Link to = "/Reports">
-                            <ListItem button>
-                                <ListItemText primary="Reports" />
-                            </ListItem>
-                        </Link>
-                        <Divider  light />
-                        <Link to = "/Blacklist">
-                            <ListItem button>
-                                <ListItemText primary="Blacklist" />
-                            </ListItem>
-                        </Link>
-                        </List>
+                    <ListItem button onClick = {go_profile}>
+                        <ListItemText  primary="Profile" />
+                    </ListItem>
+                    <Divider />
+                        <ListItem button onClick = {go_invoice}>
+                            <ListItemText primary="Invoices" />
+                        </ListItem>
+                    <Divider />
+                        <ListItem button>
+                            <ListItemText primary="Reports" />
+                        </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="Blacklist" />
+                    </ListItem>
+                    </List>
                 </div>
-                <div className='logout' style={{position:'relative', top:'100px'}}>
-                    <CusButton variant="contained" color="error" onClick = {go_logout}>Log out</CusButton>
+                <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
+                    <CusButton variant="contained" color="success" onClick = {handlestart}>Start retrieve</CusButton>
                 </div>
-                <div className='Start retrieve' style={{position:'relative', top:'110px'}}>
-                    <CusButton variant="contained" color="error" onClick = {handlestart}>Start retrieve</CusButton>
-                </div>
-                <div className='End retrieve' style={{position:'relative', top:'120px'}}>
+                <div className='End retrieve' style={{position:'relative', top:'130px'}}>
                     <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
+                </div>
+                <div className='logout' style={{position:'relative', top:'700px'}}>
+                    <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
                 </div>
             </Box>
         </div>

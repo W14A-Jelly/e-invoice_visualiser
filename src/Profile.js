@@ -25,7 +25,7 @@ const CusButton = styled(Button)({
   });
 
 const CusButton2 = styled(Button)({
-    width: '170px',
+    width: '200px',
 });
   
 const CusTextField = styled(TextField)({
@@ -59,45 +59,83 @@ const Profile = () => {
           })
           .catch((err)=>{ })
         
-      }
+    }
 
 
-      function updatepass(event) {
+    function updatepass(event) {
+    event.preventDefault();
+    //valid if empty
+    if (!password) return;
+    const url = 'https://damp-sands-01446.herokuapp.com/user/update/password';
+    const data = JSON.stringify({password:password, token:localStorage.token});
+    const options = {headers : {'Content-type': 'application/json'}}
+    axios.post(url, data, options)
+        .then((response) => {
+        console.log(response);
+        const data = response.data;
+        localStorage.token = ''
+        window.location.href = ('/');
+        })
+        .catch((err)=>{ })
+    }
+
+    function updategmailr(event) {
+    event.preventDefault();
+    //valid if empty
+    if (!gmailr||!apppass) return;
+    const url = 'https://damp-sands-01446.herokuapp.com/email/set';
+    const data = JSON.stringify({email:gmailr, email_pass:apppass, token:localStorage.token});
+    const options = {headers : {'Content-type': 'application/json'}}
+    axios.post(url, data, options)
+        .then((response) => {
+        console.log(response);
+        const data = response.data;
+        window.location.href = ('/File');
+        })
+        .catch((err)=> {})
+    }
+    function go_logout(event) {
+    window.location.href = ('/')
+    localStorage.token = ''
+    }
+
+    function go_profile(event) {
+        window.location.href = ('/profile')
+    }
+
+    function go_invoice(event) {
+        window.location.href = ('/file')
+    }
+
+    function handlestart(event) {
         event.preventDefault();
         //valid if empty
-        if (!password) return;
-        const url = 'https://damp-sands-01446.herokuapp.com/user/update/password';
-        const data = JSON.stringify({password:password, token:localStorage.token});
+        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/start';
+        const data = JSON.stringify({token:localStorage.token});
         const options = {headers : {'Content-type': 'application/json'}}
-        axios.post(url, data, options)
+        axios.put(url, data, options)
           .then((response) => {
             console.log(response);
             const data = response.data;
-            localStorage.token = ''
-            window.location.href = ('/');
           })
           .catch((err)=>{ })
+        
       }
 
-      function updategmailr(event) {
+      function handleend(event) {
         event.preventDefault();
         //valid if empty
-        if (!gmailr||!apppass) return;
-        const url = 'https://damp-sands-01446.herokuapp.com/email/set';
-        const data = JSON.stringify({email:gmailr, email_pass:apppass, token:localStorage.token});
+        const url = 'https://damp-sands-01446.herokuapp.com/email/retrieve/end';
+        const data = JSON.stringify({token:localStorage.token});
         const options = {headers : {'Content-type': 'application/json'}}
-        axios.post(url, data, options)
+        axios.put(url, data, options)
           .then((response) => {
             console.log(response);
             const data = response.data;
-            window.location.href = ('/File');
           })
-          .catch((err)=> {})
+          .catch((err)=>{ })
+        
       }
-      function go_logout(event) {
-        window.location.href = ('/')
-        localStorage.token = ''
-        }
 
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
@@ -139,14 +177,14 @@ const Profile = () => {
                     />
                 </p>
                 
-                <div className='Update' style={{position:'relative', top:'150px', zIndex:4}}>
+                <div className='Update' style={{position:'relative', top:'100px', zIndex:4}}>
                     <CusButton2 variant="contained" onClick={updateemail}>Update email</CusButton2>
                 </div>
-                <div className='Update' style={{position:'relative', top:'160px', zIndex:4}}>
+                <div className='Update' style={{position:'relative', top:'110px', zIndex:4}}>
                     <CusButton2 variant="contained" onClick={updatepass}>Update password</CusButton2>
                 </div>
-                <div className='Update' style={{position:'relative', top:'170px', zIndex:4}}>
-                    <CusButton2 variant="contained" onClick={updategmailr}>Update gmail andpass</CusButton2>
+                <div className='Update' style={{position:'relative', top:'120px', zIndex:4}}>
+                    <CusButton2 variant="contained" onClick={updategmailr}>Update gmail & pass</CusButton2>
                 </div>
                 </Box>
             </div>
@@ -157,33 +195,31 @@ const Profile = () => {
                 </div>
                 <div className='list'>
                     <List sx={style} component="nav" aria-label="mailbox folders">
-                        <Link to = "/Profile">
-                            <ListItem>
-                                <ListItemText  primary="Profile" />
-                            </ListItem>
-                        </Link>
-                        <Divider />
-                        <Link to = "/File">
-                            <ListItem button divider>
-                                <ListItemText primary="Invoices" />
-                            </ListItem>
-                        </Link>
-                        
-                        <Link to = "/Reports">
-                            <ListItem button>
-                                <ListItemText primary="Reports" />
-                            </ListItem>
-                        </Link>
-                        <Divider  light />
-                        <Link to = "/Blacklist">
-                            <ListItem button>
-                                <ListItemText primary="Blacklist" />
-                            </ListItem>
-                        </Link>
+                    <ListItem button onClick = {go_profile}>
+                        <ListItemText  primary="Profile" />
+                    </ListItem>
+                    <Divider />
+                        <ListItem button onClick = {go_invoice}>
+                            <ListItemText primary="Invoices" />
+                        </ListItem>
+                    <Divider />
+                        <ListItem button>
+                            <ListItemText primary="Reports" />
+                        </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText primary="Blacklist" />
+                    </ListItem>
                     </List>
                 </div>
-                <div className='logout' style={{position:'relative', top:'100px'}}>
-                    <CusButton variant="contained" color="error" onClick = {go_logout}>Log out</CusButton>
+                <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
+                    <CusButton variant="contained" color="success" onClick = {handlestart}>Start retrieve</CusButton>
+                </div>
+                <div className='End retrieve' style={{position:'relative', top:'130px'}}>
+                    <CusButton variant="contained" color="error" onClick = {handleend}>End retrieve</CusButton>
+                </div>
+                <div className='logout' style={{position:'relative', top:'700px'}}>
+                    <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
                 </div>
             </Box>
         </div>
