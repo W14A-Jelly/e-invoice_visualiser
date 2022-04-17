@@ -90,6 +90,7 @@ const File = () => {
 	// 	return data
 	// }
     function go_logout(event) {
+        handleend()
         window.location.href = ('/')
         localStorage.token = ''
     }
@@ -136,6 +137,10 @@ const File = () => {
           })
           .catch((err)=>{})
         
+      }
+      function end_retrieve(event){
+        event.preventDefault()
+        handleend()
       }
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
@@ -191,7 +196,7 @@ const File = () => {
                         <CusButton variant="contained" color="success">refresh</CusButton>
                     </div>
                     <div className='End retrieve' style={{position:'relative', top:'130px'}}>
-                        <CusButton variant="contained" color="error">End retrieve</CusButton>
+                        <CusButton variant="contained" color="error" onClick = {end_retrieve}>End retrieve</CusButton>
                     </div>
                     <div className='logout' style={{position:'relative', top:'700px'}}>
                         <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
