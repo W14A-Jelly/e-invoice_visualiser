@@ -127,6 +127,8 @@ const Graph = () => {
                 },
                 data: [{
                     type: "line",
+                    xValueFormatString: "MMM",
+                    yPrefix: "$#,##0.##",
                     dataPoints: stats
                 }]
             }
