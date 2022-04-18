@@ -30,6 +30,10 @@ const CusButton = styled(Button)({
 const CusButton2 = styled(Button)({
     width: '90px',
 });
+
+const CusButton3 = styled(Button)({
+    width: '250px',
+});
   
 const CusTextField = styled(TextField)({
   backgroundColor: 'white',
@@ -41,8 +45,9 @@ const Blacklist = () => {
     const [errormessage, setErrorMessage] = useState('');
     const [errorcount, setErrorCount] = useState(0);
     const [name, setName] = useState('');
-    const [name_unblock, setUnblock] = useState('');
+    var name_unblock = '';
     const [list, setList] = useState([]);
+    const [is_spam, setIs_spam] = useState(false);
 
     function go_logout(event) {
         window.location.href = ('/')
@@ -65,21 +70,21 @@ const Blacklist = () => {
         window.location.href = ('/blacklist')
     }
 
-    /*if (localStorage.token === '') {
+    if (localStorage.token === '') {
         window.location.href = ('/')
-    }*/
+    }
 
     function listblacklist() {
         const parameters = '?token='+localStorage.token;
         const url = 'https://damp-sands-01446.herokuapp.com/blacklist/list'+parameters;
-        axios.get({method: "get", url:url})
+        console.log(url)
+        axios({method: "get", url:url})
             .then((response) => {
-                console.log(response.data)
+                console.log(response.data.blacklist)
                 setList(response.data.blacklist)
             })
             .catch((err)=>{
                 if (err.response) {
-                    console.log(err.response)
                     setErrorMessage(err.response.data["message"])
                     setErrorCount(errorcount + 1)
                 }
@@ -90,10 +95,13 @@ const Blacklist = () => {
         event.preventDefault();
         if (!name) return;
         const url = 'https://damp-sands-01446.herokuapp.com/blacklist/block';
+        console.log(url)
         const data = JSON.stringify({token:localStorage.token, email:name});
         const options = {headers : {'Content-type': 'application/json'}}
         axios.put(url, data, options)
             .then((response) => {
+                console.log(response.data)
+                listblacklist()
             })
             .catch((err)=>{
                 if (err.response) {
@@ -105,12 +113,16 @@ const Blacklist = () => {
 
     function unblock(event) {
         event.preventDefault();
-        if (!unblock) return;
+        console.log(name_unblock)
+        if (!name_unblock) return;
         const url = 'https://damp-sands-01446.herokuapp.com/blacklist/unblock';
+        console.log(url)
         const data = JSON.stringify({token:localStorage.token, email:name_unblock});
         const options = {headers : {'Content-type': 'application/json'}}
         axios.put(url, data, options)
             .then((response) => {
+                console.log(response.data)
+                listblacklist()
             })
             .catch((err)=>{
                 if (err.response) {
@@ -120,16 +132,76 @@ const Blacklist = () => {
             })
     }
 
-    /*
+    function spamfilter_on(event) {
+        event.preventDefault();
+        const url = 'https://damp-sands-01446.herokuapp.com/blacklist/spamfilter/on';
+        console.log(url)
+        const data = JSON.stringify({token:localStorage.token});
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios.put(url, data, options)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((err)=>{
+                if (err.response) {
+                    setErrorMessage(err.response.data["message"])
+                    setErrorCount(errorcount + 1)
+                }
+            })
+    }
+
+    function spamfilter_off(event) {
+        event.preventDefault();
+        const url = 'https://damp-sands-01446.herokuapp.com/blacklist/spamfilter/off';
+        console.log(url)
+        const data = JSON.stringify({token:localStorage.token});
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios.put(url, data, options)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((err)=>{
+                if (err.response) {
+                    setErrorMessage(err.response.data["message"])
+                    setErrorCount(errorcount + 1)
+                }
+            })
+    }
+    
+    function spamfilter_state() {
+        const parameters = '?token='+localStorage.token;
+        const url = 'https://damp-sands-01446.herokuapp.com/blacklist/spamfilter/status'+parameters;
+        console.log(url)
+        axios({method: "get", url:url})
+            .then((response) => {
+                console.log(response.data.status)
+                setIs_spam(response.data.status)
+            })
+            .catch((err)=>{
+                if (err.response) {
+                    setErrorMessage(err.response.data["message"])
+                    setErrorCount(errorcount + 1)
+                }
+            })
+    }
+
+    
     useEffect (() =>{
+        spamfilter_state()
         listblacklist()
-	}, [])*/
+	}, [])
 
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
         <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
-                <Box component="span" sx={{width: '50vh', height: '50vh', backgroundColor: 'white', zIndex:1}}>
+                <div style={{right:'200px'}}>
                 <Error message={errormessage} count={errorcount}/>
+                </div>
+                <Box component="span" sx={{width: '50vh', height: '50vh', backgroundColor: 'white', zIndex:1, position:'absolute', top:'200px'}}>
+                <div className='Start retrieve' style={{position:'absolute', top:'-50px'}}>
+                    {is_spam && <CusButton3 variant="contained" color="error" onClick={(e) => {setIs_spam(false); spamfilter_off(e);}}>Turn Spam filter off</CusButton3>}
+                    {!is_spam && <CusButton3 variant="contained" color="success" onClick={(e) => {setIs_spam(true); spamfilter_on(e);}}>Turn Spam filter on</CusButton3>}
+                </div>
                 <div style={{fontSize: '25px', position:'relative', top:'20px', zIndex:3}}>Blacklist</div>
                         <List dense sx={{ width: '100%', position:'relative', left:'150px', top:'50px', maxWidth: 350, bgcolor: 'white' }}>
                         {list.map((value) => {
@@ -138,7 +210,7 @@ const Blacklist = () => {
                             <ListItem
                                 key={value}
                                 secondaryAction={
-                                <IconButton onClick={(e) => {setUnblock(value); unblock(e);}}>
+                                <IconButton onClick={(e) => {name_unblock = value; unblock(e);}}>
                                 <CloseIcon />
                                 </IconButton>
                                 }
@@ -149,14 +221,14 @@ const Blacklist = () => {
                             );
                         })}
                         </List>
-                <div style={{position:'absolute', bottom:'450px', right:'680px'}}>
+                <div style={{position:'absolute', bottom:'150px', right:'170px'}}>
                 <CusTextField
                 id="outlined-helperText"
                 label="Email"
                 defaultValue=""
                 onChange={e => setName(e.target.value)}
                 />
-                <CusButton2 variant="contained" sx={{top:'80px', left:'30px'}} onClick={block}>Add</CusButton2>
+                <CusButton2 variant="contained" sx={{bottom:'-80px', left:'20px'}} onClick={block}>Add</CusButton2>
                 </div>
                 </Box>
             </div>

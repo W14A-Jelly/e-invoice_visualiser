@@ -12,6 +12,11 @@ import TextField from '@mui/material/TextField';
 import CanvasJSReact from './canvasjs.react';
 import axios from 'axios';
 import Error from './error'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { YoutubeSearchedForRounded } from '@mui/icons-material';
 
 const style = {
     width: '100%',
@@ -24,26 +29,21 @@ const style = {
   
 const CusButton = styled(Button)({
       width: '110px',
-  });
+});
+
+const CusTextField = styled(TextField)({
+backgroundColor: 'white',
+width: '100px',
+padding: '10px',
+})
   
 let itemData = []
   
-const CusTextField = styled(TextField)({
-  backgroundColor: 'white',
-  width: '100px',
-  padding: '10px',
-})
-
-const SearchTextField = styled(TextField)({
-    backgroundColor: 'white',
-    width: '220px',
-    padding: '10px',
-  })
-  
 const Graph = () => {
-    const [year, setYear] = useState(2022);
+    var year = 2022;
     const [errormessage, setErrorMessage] = useState('');
     const [errorcount, setErrorCount] = useState(0);
+    const [stats, setStats] = useState([]);
 
     if (localStorage.token === '') {
         window.location.href = ('/')
@@ -77,7 +77,8 @@ const Graph = () => {
         const options = {headers : {'Content-type': 'application/json'}}
         axios({method: "get", url:url})
         .then((response) => {
-            return setdatapoints(response.data.price);
+            console.log(response.data.price)
+            setdatapoints(response.data.price);
         })
         .catch((err)=>{
             if (err.response) {
@@ -86,20 +87,25 @@ const Graph = () => {
             }
         })
     }
+
     
     function setdatapoints(data) {
         const datapoints = []
         for (var i = 0; i < data.length; i++) {
-            const date = new Date(2022, i, 1);
+            const date = new Date(year, i, 1);
             datapoints.push({x: date, y:data[i]})
         }
 
-        return datapoints
+        setStats(datapoints)
     }
 
     /* setdatapoints([0,0,0,0,0,0,0,0,0,0,0,0]) */
     //const stats = [{x:new Date(2022, 1, 1), y:200}, {x:new Date(2022, 2, 1), y:500}]
-    const stats = getstats()
+    useEffect (() =>{
+        getstats()
+        console.log(stats)
+	}, [])
+    
     var Component = React.Component;
     var CanvasJS = CanvasJSReact.CanvasJS;
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -140,9 +146,19 @@ const Graph = () => {
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
         <div className='right_panel' style={{display: 'flex', position:'absolute', alignItems: 'center', justifyContent:'right', right:'100px', top:'190px', zIndex:1}}>
+            <Box sx={{ minWidth: 120, position:'relative', bottom:'180px', left:'140px', zIndex:7}}>
+                <CusTextField
+                    id="outlined-helperText"
+                    label="Year"
+                    defaultValue=""
+                    onChange={e => {year = e.target.value; getstats();}}
+                    />
+            </Box>
             <Box component="span" sx={{width: '90vh', height: '35vh', backgroundColor: 'white', position:'relative', justifyContent: 'center', zIndex:1}}>
                 <Error message={errormessage} count={errorcount}/>
-                <Canvas sx={{zIndex:5}}/>
+                <div className='graph' style={{zIndex:5, position:'relative', top:'70px'}}>
+                <Canvas />
+                </div>
             </Box>
         </div>
         <div className='left_panel' style={{display: 'flex',  justifyContent:'left', alignItems:'center', position:'absolute'}}>

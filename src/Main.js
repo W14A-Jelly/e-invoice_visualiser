@@ -18,6 +18,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import { FormatColorResetSharp } from '@mui/icons-material';
+import Error from './errorpersistant';
+
 const style = {
   width: '100%',
   height: '100',
@@ -38,6 +41,12 @@ const File = () => {
     
     const [btnState, setBtn] = useState(false)
     const [itemData,setitemData] = useState([])
+    const [errormessage, setErrorMessage] = useState('');
+    const [errorcount, setErrorCount] = useState(0);
+
+    if (localStorage.token === '') {
+        window.location.href = ('/')
+    }
 
     // Happens every 10 seconds. Get new list of invoices names
 	useEffect (() =>{
@@ -108,6 +117,14 @@ const File = () => {
         
     }
 
+    function go_graph(event) {
+        window.location.href = ('/graph')  
+    }
+
+    function go_blacklist(event) {
+        window.location.href = ('/blacklist')
+    }
+
 
     function handlestart() {
         //valid if empty
@@ -116,11 +133,16 @@ const File = () => {
         const options = {headers : {'Content-type': 'application/json'}}
         axios.put(url, data, options)
           .then((response) => {
-            console.log(response);
             const data = response.data;
             setBtn(true);
           })
-          .catch((err)=>{})
+          .catch((err)=>{
+            if (err.response) {
+                console.log()
+                setErrorMessage('You have no invocies. Make sure to set up your email from the Profile page!')
+                setErrorCount(errorcount + 1)
+            }
+          })
         
       }
 
@@ -135,7 +157,8 @@ const File = () => {
             const data = response.data;
             setBtn(false);
           })
-          .catch((err)=>{})
+          .catch((err)=>{
+          })
         
       }
       function end_retrieve(event){
@@ -147,20 +170,24 @@ const File = () => {
             <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
                 <div className='filter' style={{position:'relative', bottom:'480px', left:'100px', zIndex:3}}>
                     <FormGroup>
-                    <FormControlLabel control={<Switch color="warning" onClick={() => {go_filter()}} />} label="Filter" />
+                    <FormControlLabel control={<Switch color="warning" onClick={go_filter} />} label="Filter" />
                     </FormGroup>
                 </div>
                 <Box component="span" sx={{width: '90vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>
                 <div style={{fontSize: '25px', position:'relative', right:'450px', top:'50px', zIndex:4}}>Invoices</div>
+                <div style={{position:'relative', left:'300px', top:'50px', zIndex:5}}>
+                <Error message={errormessage} count={errorcount}/>
+                </div>
                 <ImageList sx={{ width: '80vh', height: '60vh', position:'relative', left:'60px', top:'50px'}} cols={10}>
                     {itemData.map((item) => (
                         //repalce the href with https://peaceful-headland-84816.herokuapp.com/static/render+ {item.title}.jpg
                         <ImageListItem key={item.title}>
-                        <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
+                        <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}>
+                        <IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px', width: '75px'}}>
                             <ArticleIcon fontSize="large" />
                         </IconButton></a>
                         <ImageListItemBar
-                            title={item.title}
+                            title={item.title.slice(2)}
                             position="below"
                         />
                         </ImageListItem>
@@ -183,21 +210,21 @@ const File = () => {
                                 <ListItemText primary="Invoices" />
                             </ListItem>
                         <Divider />
-                            <ListItem button>
-                                <ListItemText primary="Reports" />
+                            <ListItem button onClick = {go_graph}>
+                                <ListItemText primary="Graph" />
                             </ListItem>
                         <Divider />
-                        <ListItem button>
+                        <ListItem button onClick = {go_blacklist}>
                             <ListItemText primary="Blacklist" />
                         </ListItem>
                         </List>
                     </div>
-                    <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
+                    {false && <div className='Start retrieve' style={{position:'relative', top:'100px'}}>
                         <CusButton variant="contained" color="success">refresh</CusButton>
-                    </div>
-                    <div className='End retrieve' style={{position:'relative', top:'130px'}}>
+                    </div>}
+                    {false && <div className='End retrieve' style={{position:'relative', top:'130px'}}>
                         <CusButton variant="contained" color="error" onClick = {end_retrieve}>End retrieve</CusButton>
-                    </div>
+                    </div>}
                     <div className='logout' style={{position:'relative', top:'700px'}}>
                         <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
                     </div>

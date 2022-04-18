@@ -12,6 +12,8 @@ import Register2 from './Register';
 import Main from './Main'
 import Profile from './Profile'
 import Filter from './Filter'
+import Graph from './Graph'
+import Blacklist from './Blacklist';
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
           <Route path = "/file" element = {<Main/>} />
           <Route path = "/profile" element = {<Profile/>} />
           <Route path = "/Filter" element = {<Filter/>} />
+          <Route path = "/graph" element = {<Graph/>} />
+          <Route path = "/blacklist" element = {<Blacklist/>} />
         </Routes>
       </BrowserRouter>
     </div>

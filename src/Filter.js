@@ -46,8 +46,8 @@ const SearchTextField = styled(TextField)({
     width: '220px',
     padding: '10px',
   })
-  
-  const Filter = () => {
+
+const Filter = () => {
     const [files, setfiles] = useState([])
     const [priceMax, setpriceMax] = useState("");
     const [priceMin, setpriceMin] = useState("");
@@ -56,6 +56,10 @@ const SearchTextField = styled(TextField)({
     const [seller, setseller] = useState("");
     const [errormessage, setErrorMessage] = useState('');
     const [errorcount, setErrorCount] = useState(0);
+
+    if (localStorage.token === '') {
+        window.location.href = ('/')
+    }
 
     function go_logout(event) {
         window.location.href = ('/');
@@ -68,6 +72,19 @@ const SearchTextField = styled(TextField)({
 
     function go_invoice(event) {
         window.location.href = ('/file')
+    }
+
+    function fetchfiles() {
+        const url = 'https://damp-sands-01446.herokuapp.com/list/filenames?token='+localStorage.token;
+        
+        const options = {headers : {'Content-type': 'application/json'}}
+        axios({method: "get", url:url})
+        .then((response) => {
+            console.log(response)
+            const data = response.data.filenames;
+            setfiles(data)
+        })
+        .catch((err)=>{ })
     }
 
     function filterfiles(event) {
@@ -92,6 +109,19 @@ const SearchTextField = styled(TextField)({
             }
         })
     }
+
+    useEffect (() =>{
+        fetchfiles()
+	}, [])
+
+    function go_graph(event) {
+        window.location.href = ('/graph')  
+    }
+
+    function go_blacklist(event) {
+        window.location.href = ('/blacklist')
+    }
+
 
     itemData = [];
     for (const x in files) {
@@ -165,11 +195,11 @@ const SearchTextField = styled(TextField)({
             <ImageList sx={{ width: '40vh', height: '50vh', position:'relative', left:'60px', top:'50px'}} cols={5}>
                 {itemData.map((item) => (
                     <ImageListItem key={item.title}>
-                    <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px'}}>
+                    <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}><IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px', width: '75px'}}>
                             <ArticleIcon fontSize="large" />
                     </IconButton></a>
                     <ImageListItemBar
-                        title={item.title}
+                        title={item.title.slice(2)}
                         position="below"
                     />
                     </ImageListItem>
@@ -192,11 +222,11 @@ const SearchTextField = styled(TextField)({
                             <ListItemText primary="Invoices" />
                         </ListItem>
                     <Divider />
-                        <ListItem button>
-                            <ListItemText primary="Reports" />
+                        <ListItem button onClick = {go_graph}>
+                            <ListItemText primary="Graph" />
                         </ListItem>
                     <Divider />
-                    <ListItem button>
+                    <ListItem button onClick = {go_blacklist}>
                         <ListItemText primary="Blacklist" />
                     </ListItem>
                     </List>

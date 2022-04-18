@@ -127,6 +127,14 @@ const Profile = () => {
         window.location.href = ('/file')
     }
 
+    function go_graph(event) {
+        window.location.href = ('/graph')
+    }
+
+    function go_blacklist(event) {
+        window.location.href = ('/blacklist')
+    }
+
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
         
@@ -195,11 +203,11 @@ const Profile = () => {
                             <ListItemText primary="Invoices" />
                         </ListItem>
                     <Divider />
-                        <ListItem button>
-                            <ListItemText primary="Reports" />
+                        <ListItem button onClick = {go_graph}>
+                            <ListItemText primary="Graph" />
                         </ListItem>
                     <Divider />
-                    <ListItem button>
+                    <ListItem button onClick = {go_blacklist}>
                         <ListItemText primary="Blacklist" />
                     </ListItem>
                     </List>
