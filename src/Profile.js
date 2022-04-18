@@ -11,6 +11,8 @@ import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Error from './error'
+
 const style = {
     width: '100%',
     height: '100',
@@ -41,7 +43,12 @@ const Profile = () => {
     const [password, setpassword] = useState();
     const [gmailr, setgmailr] = useState();
     const [apppass, setapppass] = useState();
-
+    const [errormessage, setErrorMessage] = useState('');
+    const [errorcount, setErrorCount] = useState(0);
+    
+    if (localStorage.token === '') {
+        window.location.href = ('/')
+    }
 
     function updateemail(event) {
         event.preventDefault();
@@ -57,10 +64,13 @@ const Profile = () => {
             localStorage.token = ''
             window.location.href = ('/');
           })
-          .catch((err)=>{ })
+          .catch((err)=>{
+            if (err.response) {
+                setErrorMessage(err.response.data["message"])
+                setErrorCount(errorcount + 1)
+        }})
         
     }
-
 
     function updatepass(event) {
     event.preventDefault();
@@ -76,7 +86,12 @@ const Profile = () => {
         localStorage.token = ''
         window.location.href = ('/');
         })
-        .catch((err)=>{ })
+        .catch((err)=>{
+            if (err.response) {
+                setErrorMessage(err.response.data["message"])
+                setErrorCount(errorcount + 1)
+            }
+        })
     }
 
     function updategmailr(event) {
@@ -92,7 +107,12 @@ const Profile = () => {
         const data = response.data;
         window.location.href = ('/File');
         })
-        .catch((err)=> {})
+        .catch((err)=> {
+            if (err.response) {
+                setErrorMessage(err.response.data["message"])
+                setErrorCount(errorcount + 1)
+            }
+        })
     }
     function go_logout(event) {
     window.location.href = ('/')
@@ -109,8 +129,10 @@ const Profile = () => {
 
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
+        
         <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
                 <Box component="span" sx={{width: '50vh', height: '50vh', backgroundColor: 'white', zIndex:1}}>
+                <Error message={errormessage} count={errorcount}/>
                 <div style={{fontSize: '25px', position:'relative', top:'20px', zIndex:3}}>Profile</div>
                 <p>
                     <CusTextField
