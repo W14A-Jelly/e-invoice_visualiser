@@ -9,25 +9,30 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Error from './error'
+import AppBar from '@mui/material/AppBar';
+import PersonIcon from '@mui/icons-material/Person';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import BlockIcon from '@mui/icons-material/Block';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const style = {
     width: '100%',
     height: '100',
     maxWidth: 600,
-    bgcolor: 'white',
+    bgcolor: '#b3e5fc',
     position:'aboslute',
     top:'20px',
   };
   
 const CusButton = styled(Button)({
-      width: '110px',
+      width: '130px',
   });
 
 const CusButton2 = styled(Button)({
-    width: '200px',
+    width: '120px',
 });
   
 const CusTextField = styled(TextField)({
@@ -136,13 +141,25 @@ const Profile = () => {
     }
 
     return (
-        <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
-        
-        <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
-                <Box component="span" sx={{width: '50vh', height: '50vh', backgroundColor: 'white', zIndex:1}}>
+        <div className='background' style={{backgroundColor: '#e0e0e0', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
+        <div className='top_panel' style={{position:"relative", zIndex:7, justifyContent:'center', alignItems:'center', overflowX:'hidden', overflowY:'hidden'}}>
+                <Box sx={{width: '100vh'}}>
+                <AppBar position="absolute" color="inherit" elevation={0} sx={{width: '190vh', height: '10vh', backgroundColor: 'white'}}>
+                <div style={{position:'relative', top:'20px', right:'270px'}}>
+                    <img src={logo} alt="logo"  width="150" height="100" pointerEvents='none' />
+                </div>
+                <div style={{fontSize: '25px', position:'relative', right:'-450px', top:'-50px', fontWeight:'bold', zIndex:4}}>Profile</div>
+                <div className='logout' style={{position:'relative', right:'-1050px', top:'-90px', zIndex:9}}>
+                        <CusButton variant="contained" color="error" onClick = {go_logout}><LogoutIcon />Log out</CusButton>
+                    </div>
+                </AppBar>
+                </Box>
+        </div>
+        <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px', top:'-350px'}}>
+                <Box component="span" sx={{width: '40vh', height: '45vh', backgroundColor: 'white', zIndex:10}}>
                 <Error message={errormessage} count={errorcount}/>
-                <div style={{fontSize: '25px', position:'relative', top:'20px', zIndex:3}}>Profile</div>
-                <p>
+                <div className='input' style={{display: 'grid', position:'relative', top:'20px'}}>
+                <p style={{padding: 0, margin:5}}>
                     <CusTextField
                     id="outlined-helperText"
                     label="Email"
@@ -150,7 +167,7 @@ const Profile = () => {
                     onChange={e => setemail(e.target.value)}
                     />
                 </p>
-                <p>
+                <p style={{padding: 0, margin:5}}>
                     <CusTextField
                     id="outlined-helperText"
                     label="Password"
@@ -159,61 +176,69 @@ const Profile = () => {
                     onChange={e => setpassword(e.target.value)}
                     />
                 </p>
-                <p>
+                <p style={{padding: 0, margin:5}}>
                     <CusTextField
                     id="outlined-helperText"
-                    label="Gmail Receive"
+                    label="E-Invoice Gmail"
                     defaultValue=""
                     onChange={e => setgmailr(e.target.value)}
                     />
                 </p>
-                <p>
+                <p style={{padding: 0, margin:5}}>
                     <CusTextField
                     id="outlined-helperText"
-                    label="Gmail Password"
+                    label="App Password"
                     type="password"
                     defaultValue=""
                     onChange={e => setapppass(e.target.value)}
                     />
                 </p>
-                
                 <div className='Update' style={{position:'relative', top:'100px', zIndex:4}}>
-                    <CusButton2 variant="contained" onClick={updateemail}>Update email</CusButton2>
+                    <CusButton2 variant="contained" onClick={(e) => {updateemail(e); updatepass(e);updategmailr(e);}}>Update</CusButton2>
                 </div>
-                <div className='Update' style={{position:'relative', top:'110px', zIndex:4}}>
-                    <CusButton2 variant="contained" onClick={updatepass}>Update password</CusButton2>
                 </div>
-                <div className='Update' style={{position:'relative', top:'120px', zIndex:4}}>
-                    <CusButton2 variant="contained" onClick={updategmailr}>Update gmail & pass</CusButton2>
-                </div>
+                </Box>
+                <Box component="span" sx={{width: '50vh', height: '45vh', backgroundColor: 'white', zIndex:10}}>
+                <div style={{fontSize: '25px', position:'relative', top:'20px', fontWeight:'bold', zIndex:4}}>HOW TO START!</div>
+                <div style={{fontSize: '20px', position:'relative', color:'grey', top:'20px', zIndex:4}}>HOW TO SETUP YOUR E-INVOICE EMAIL</div>
+                    <Box bgcolor='#2196f3' sx={{position:'relative', width: '600px', height: '5vh', zIndex:10, left:'20px', top:'40px'}}>
+                        <div style={{fontSize: '20px', position:'relative', color:'white', top:'20px', zIndex:4}}>1. Create a Google Account then create an App password</div>
+                    </Box>
+                    <Box bgcolor='#1e88e5' sx={{position:'relative', width: '600px', height: '5vh', zIndex:10, left:'20px', top:'40px'}}>
+                        <div style={{fontSize: '20px', position:'relative', color:'white', top:'20px', zIndex:4}}>2. Set "App" as "Mail" & "Device" as "Windows computer"</div>
+                    </Box>
+                    <Box bgcolor='#1976d2' sx={{position:'relative', width: '600px', height: '5vh', zIndex:10, left:'20px', top:'40px'}}>
+                        <div style={{fontSize: '20px', position:'relative', color:'white', top:'20px', zIndex:4}}>3. Generate App Password and copy it down with spaces</div>
+                    </Box>
+                    <Box bgcolor='#1565c0' sx={{position:'relative', width: '600px', height: '5vh', zIndex:10, left:'20px', top:'40px'}}>
+                        <div style={{fontSize: '20px', position:'relative', color:'white', top:'20px', zIndex:4}}>4. Enable IMAP in Gmail settings and return to this page</div>
+                    </Box>
+                    <Box bgcolor='#0d47a1' sx={{position:'relative', width: '600px', height: '5vh', zIndex:10, left:'20px', top:'40px'}}>
+                        <div style={{fontSize: '20px', position:'relative', color:'white', top:'20px', zIndex:4}}>5. Update "E-invoice Gmail" and "App Password" text fields</div>
+                    </Box>
                 </Box>
             </div>
         <div className='left_panel' style={{display: 'flex',  justifyContent:'left', alignItems:'center', position:'absolute'}}>
-            <Box component="span" sx={{ width: 300, height: '100vh', backgroundColor: 'white', margin:'0', padding:'0'}}>
-                <div style={{position:'aboslute', top:'20px'}}>
-                <img src={logo} alt="logo" width="150" height="100" />
-                </div>
-                <div className='list'>
-                    <List sx={style} component="nav" aria-label="mailbox folders">
-                    <ListItem button onClick = {go_profile}>
-                        <ListItemText  primary="Profile" />
+            <Box component="span" sx={{ width: 300, height: '100vh', backgroundColor: '#b3e5fc', margin:'0', padding:'0'}}>
+                <div className='list' style={{position:'relative', top:'150px', zIndex:7}}>
+                    <List sx={style}>
+                    <ListItem button onClick = {go_profile} sx={{backgroundColor: '#81d4fa'}}>
+                        <PersonIcon/>
+                        <ListItemText  primary="Profile" sx={{position:'relative', right:'-20px'}}/>
                     </ListItem>
-                    <Divider />
-                        <ListItem button onClick = {go_invoice}>
-                            <ListItemText primary="Invoices" />
-                        </ListItem>
-                    <Divider />
-                        <ListItem button onClick = {go_graph}>
-                            <ListItemText primary="Graph" />
-                        </ListItem>
-                    <Divider />
+                    <ListItem button onClick = {go_invoice}>
+                        <MonetizationOnIcon/>
+                        <ListItemText primary="Invoices" sx={{position:'relative', right:'-20px'}}/>
+                    </ListItem>
+                    <ListItem button onClick = {go_graph}>
+                        <BarChartIcon/>
+                        <ListItemText primary="Graph" sx={{position:'relative', right:'-20px'}} />
+                    </ListItem>
                     <ListItem button onClick = {go_blacklist}>
-                        <ListItemText primary="Blacklist" />
+                        <BlockIcon/>
+                        <ListItemText primary="Blacklist" sx={{position:'relative', right:'-20px'}}/>
                     </ListItem>
                     </List>
-                </div>
-                <div className='logout' style={{position:'relative', top:'700px'}}>
-                    <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
                 </div>
             </Box>
         </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
   BrowserRouter,
@@ -7,8 +6,8 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import Login2 from './Login'
-import Register2 from './Register';
+import Login from './Login'
+import Register from './Register';
 import Main from './Main'
 import Profile from './Profile'
 import Filter from './Filter'
@@ -21,11 +20,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path = "/" element = {<Login2/>} />
-          <Route path = "/register" element = {<Register2/>} />
+          <Route path = "/" element = {<Login/>} />
+          <Route path = "/register" element = {<Register/>} />
           <Route path = "/file" element = {<Main/>} />
           <Route path = "/profile" element = {<Profile/>} />
-          <Route path = "/Filter" element = {<Filter/>} />
+          <Route path = "/filter" element = {<Filter/>} />
           <Route path = "/graph" element = {<Graph/>} />
           <Route path = "/blacklist" element = {<Blacklist/>} />
         </Routes>

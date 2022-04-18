@@ -13,8 +13,7 @@ const Error = ({message, count}) => {
         }
 
         setVisible(true)
-        
-
+    
         return
     }, [message, count])
 
@@ -27,7 +26,7 @@ const Error = ({message, count}) => {
             <Alert 
             severity="info" 
             sx={{position:'absolute', zIndex:5, width:'35%', top:'100px', marginLeft:'50px'}}>
-            <AlertTitle sx={{position:'relative', right:'160px'}}>Info</AlertTitle>
+            <AlertTitle sx={{position:'relative', right:'185px'}}>Info</AlertTitle>
             {message}
             </Alert>
         </div>

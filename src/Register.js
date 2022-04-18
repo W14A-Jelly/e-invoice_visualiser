@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import logo from './img/logo.png'
 import axios from 'axios';
+import Error from './error';
 const CusButton = styled(Button)({
     width: '220px',
 })
@@ -13,49 +14,9 @@ const CusTextField = styled(TextField)({
   backgroundColor: 'white'
 })
 
-class Register extends React.Component {
-    render() {
-      return (
-        <div className='background' style={{backgroundColor: '#90caf9', height: '100vh'}}>
-          <div style={{position:'relative', top:'80px'}}>
-            <img src={logo} alt="logo"  width="200" height="150"/>
-          </div>
-          <div className='Login' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '60vh'}}>
-            <Box component="span" sx={{ p: 4, backgroundColor: 'white' }}>
-              <div className='About'>
-              </div>
-              <div className='Input'>
-                <div style={{fontSize: '25px', position:'relative', bottom:'10px'}}>Register</div>
-                <p>
-                  <CusTextField
-                  required
-                  id="outlined-required"
-                  label="Email"
-                  />
-                </p>
-                <p>
-                  <CusTextField
-                  required
-                  id="outlined-required"
-                  type="password"
-                  label="Password"
-                  />
-                </p>
-                <p>
-                  <CusButton variant="contained">Register</CusButton>
-                </p>
-                <p>
-                  <CusButton variant="contained">Back to Login</CusButton>
-                </p>
-              </div>
-            </Box>
-          </div>
-        </div>
-      );
-    }
-  }
-
-const Register2 = () => {
+const Register = () => {
+  const [errormessage, setErrorMessage] = useState('');
+  const [errorcount, setErrorCount] = useState(0);
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   //change it later
@@ -76,21 +37,25 @@ const Register2 = () => {
         localStorage.token = data.token
         window.location.href = ('/file');
       })
-      .catch((err)=>{ })
+      .catch((err)=>{
+        if (err.response) {
+          setErrorMessage(err.response.data["message"])
+          setErrorCount(errorcount + 1)
+        }
+      })
   }
   return (
-    <div className='background' style={{backgroundColor: '#90caf9', height: '100vh'}}>
-      <div style={{position:'relative', top:'80px'}}>
-        <img src={logo} alt="logo"  width="200" height="150"/>
-      </div>
-      <div className='Login' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '60vh'}}>
-        <Box component="span" sx={{ p: 4, backgroundColor: 'white' }}>
-          <div className='About'>
+    <div className='background' style={{backgroundColor: '#b3e5fc', height: '100vh'}}>
+      <div className='Login' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '80vh'}}>
+        <Error message={errormessage} count={errorcount}/>
+        <Box component="span" sx={{ width:'500px', height:'550px', backgroundColor: 'white' }}>
+          <div style={{ position: 'relative', top: '20px' }}>
+            <img src={logo} alt="logo" width="200" height="150" />
           </div>
           <div className='Input'>
-            <div style={{fontSize: '25px', position:'relative', bottom:'10px'}}>Register</div>
-            <p>
-              <CusTextField
+            <div style={{ fontSize: '25px', position: 'relative', top: '10px' }}>Register</div>
+            <p style={{position: 'relative', top: '30px' }}>
+            <CusTextField
               required
               id="outlined-required"
               label="Email"
@@ -98,8 +63,8 @@ const Register2 = () => {
               onChange={e => setemail(e.target.value)}
               />
             </p>
-            <p>
-              <CusTextField
+            <p style={{position: 'relative', top: '30px' }}>
+            <CusTextField
               required
               id="outlined-required"
               label="Password"
@@ -108,11 +73,11 @@ const Register2 = () => {
               onChange={e => setpassword(e.target.value)}
               />
             </p>
-            <p>
-              <CusButton variant="contained" onClick = {handlereg}>Register</CusButton>
+            <p style={{position: 'relative', top: '30px' }}>
+            <CusButton variant="contained" onClick = {handlereg}>Register</CusButton>
             </p>
-            <p>
-              <CusButton variant="contained" onClick = {back_to_login}>Back to Login</CusButton>
+            <p style={{position: 'relative', top: '30px' }}>
+            <CusButton variant="contained" onClick = {back_to_login}>Back to Login</CusButton>
             </p>
           </div>
         </Box>
@@ -121,4 +86,4 @@ const Register2 = () => {
   );
 };
 
-export default Register2;
+export default Register;

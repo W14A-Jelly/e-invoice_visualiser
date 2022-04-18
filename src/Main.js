@@ -16,26 +16,29 @@ import ArticleIcon from '@mui/icons-material/Article';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
-import { FormatColorResetSharp } from '@mui/icons-material';
 import Error from './errorpersistant';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AppBar from '@mui/material/AppBar';
+import PersonIcon from '@mui/icons-material/Person';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import BlockIcon from '@mui/icons-material/Block';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const style = {
   width: '100%',
   height: '100',
   maxWidth: 600,
-  bgcolor: 'white',
+  bgcolor: '#b3e5fc',
   position:'aboslute',
   top:'20px',
 };
 
 const CusButton = styled(Button)({
-    width: '110px',
+    width: '130px',
 })
-
-
-
 
 const File = () => {
     
@@ -56,17 +59,12 @@ const File = () => {
         },5000)
 	}, [])
 
-
-
-
-
     //Happens at page loading
     useEffect (() =>{
         fetchfiles()
         handleend()
         handlestart()
 	}, [])
-
 
     function fetchfiles() {
         const url = 'https://damp-sands-01446.herokuapp.com/list/filenames?token='+localStorage.token;
@@ -75,11 +73,16 @@ const File = () => {
         axios({method: "get", url:url})
         .then((response) => {
             console.log(response)
-            const data = response.data.filenames;
+            const data = response.data;
+            const filename = data.filenames;
+            const is_new = data.new;
+            const paid = data.paid;
+            
             
             let New_invoices = []
-            for (const x in data) {
-                New_invoices = ([...New_invoices,{title:data[x]}])
+            for (const x in filename) {
+                console.log(is_new[x])
+                New_invoices = ([...New_invoices,{title:filename[x], new:is_new[x], paid:paid[x]}])
             }
             setitemData(New_invoices)
             
@@ -88,16 +91,6 @@ const File = () => {
         .catch((err)=>{ })
     }
 
-	// const fetchfiles = async () => {
-    //     //change url later
-    //     const url = 'https://damp-sands-01446.herokuapp.com/list/filenames?token='+localStorage.token;
-    //     //const url = 'http://192.168.1.184:8080/example'
-	// 	const response = await fetch(url);
-	// 	//const response = await fetch('http://192.168.1.184:8080/example?token='+localStorage.token)
-	// 	const data = (await response.json()).filenames
-    //     console.log(response)
-	// 	return data
-	// }
     function go_logout(event) {
         handleend()
         window.location.href = ('/')
@@ -105,7 +98,7 @@ const File = () => {
     }
 
     function go_filter(event) {
-        window.location.href = ('/Filter')
+        window.location.href = ('/filter')
     }
 
     function go_profile(event) {
@@ -139,7 +132,7 @@ const File = () => {
           .catch((err)=>{
             if (err.response) {
                 console.log()
-                setErrorMessage('You have no invocies. Make sure to set up your email from the Profile page!')
+                setErrorMessage('You have not setup your invoice gmail. Make sure to go to "Profile" tab first to start recieving invocies!')
                 setErrorCount(errorcount + 1)
             }
           })
@@ -166,28 +159,42 @@ const File = () => {
         handleend()
       }
     return (
-        <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
-            <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'150px'}}>
-                <div className='filter' style={{position:'relative', bottom:'480px', left:'100px', zIndex:3}}>
+        <div className='background' style={{backgroundColor: '#e0e0e0', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
+            <div className='top_panel' style={{position:"relative", zIndex:7, justifyContent:'center', alignItems:'center', overflowX:'hidden', overflowY:'hidden'}}>
+                <Box sx={{width: '100vh'}}>
+                <AppBar position="absolute" color="inherit" elevation={0} sx={{width: '190vh', height: '10vh', backgroundColor: 'white'}}>
+                <div style={{position:'relative', top:'20px', right:'270px'}}>
+                    <img src={logo} alt="logo"  width="150" height="100" pointerEvents='none' />
+                </div>
+                <div style={{fontSize: '25px', position:'relative', right:'-450px', top:'-50px', fontWeight:'bold', zIndex:4}}>Invoices</div>
+                <div className='logout' style={{position:'relative', right:'-1050px', top:'-90px', zIndex:9}}>
+                        <CusButton variant="contained" color="error" onClick = {go_logout}><LogoutIcon />Log out</CusButton>
+                    </div>
+                </AppBar>
+                </Box>
+            </div>
+            <div className='right_panel' style={{display: 'flex', position:'relative', alignItems: 'center', justifyContent:'center', left:'70px'}}>
+                <div className='filter' style={{position:'relative', bottom:'550px', left:'175px', zIndex:10}}>
                     <FormGroup>
                     <FormControlLabel control={<Switch color="warning" onClick={go_filter} />} label="Filter" />
                     </FormGroup>
                 </div>
-                <Box component="span" sx={{width: '90vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>
-                <div style={{fontSize: '25px', position:'relative', right:'450px', top:'50px', zIndex:4}}>Invoices</div>
-                <div style={{position:'relative', left:'300px', top:'50px', zIndex:5}}>
+                <Box component="span" sx={{width: '95vh', height: '70vh', backgroundColor: '#e0e0e0', zIndex:1, bottom:'100px', position:'relative'}}>
+                <div style={{position:'relative', left:'300px', top:'10px', zIndex:5}}>
                 <Error message={errormessage} count={errorcount}/>
                 </div>
                 <ImageList sx={{ width: '80vh', height: '60vh', position:'relative', left:'60px', top:'50px'}} cols={10}>
                     {itemData.map((item) => (
-                        //repalce the href with https://peaceful-headland-84816.herokuapp.com/static/render+ {item.title}.jpg
                         <ImageListItem key={item.title}>
+                        {false && <NewReleasesIcon sx={{position:'absolute', zIndex:5, left:'5px'}}/>}
+                        {false && <CheckCircleIcon sx={{position:'absolute', zIndex:5, left:'60px'}}/>}
                         <a href = {"https://damp-sands-01446.herokuapp.com/static/renders/"+item.title+'.jpg'}>
-                        <IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px', width: '75px'}}>
-                            <ArticleIcon fontSize="large" />
-                        </IconButton></a>
+                        <IconButton sx={{border: "1px solid grey", borderRadius: 1, height: '100px', width: '75px',backgroundColor: 'white'}}>
+                            <ArticleIcon fontSize="large"  />
+                        </IconButton>
+                        </a>
                         <ImageListItemBar
-                            title={item.title.slice(2)}
+                            title={item.title.slice(2, -4)}
                             position="below"
                         />
                         </ImageListItem>
@@ -195,27 +202,25 @@ const File = () => {
                     </ImageList>
                 </Box>
             </div>
-            <div className='left_panel' style={{display: 'flex',  justifyContent:'left', alignItems:'center', position:'absolute'}}>
-                <Box component="span" sx={{ width: 300, height: '100vh', backgroundColor: 'white', margin:'0', padding:'0'}}>
-                    <div style={{position:'aboslute', top:'20px'}}>
-                    <img src={logo} alt="logo"  width="150" height="100" />
-                    </div>
-                    <div className='list'>
-                        <List sx={style} component="nav" aria-label="mailbox folders">
+            <div className='left_panel' style={{display: 'flex',  justifyContent:'left', alignItems:'center', position:'absolute', zIndex:6}}>
+                <Box component="span" sx={{ width: 300, height: '100vh', backgroundColor: '#b3e5fc', margin:'0', padding:'0'}}>
+                    <div className='list' style={{position:'relative', top:'150px'}}>
+                        <List sx={style}>
                         <ListItem button onClick = {go_profile}>
-                            <ListItemText  primary="Profile" />
+                            <PersonIcon/>
+                            <ListItemText  primary="Profile" sx={{position:'relative', right:'-20px'}}/>
                         </ListItem>
-                        <Divider />
-                            <ListItem button onClick = {go_invoice}>
-                                <ListItemText primary="Invoices" />
-                            </ListItem>
-                        <Divider />
-                            <ListItem button onClick = {go_graph}>
-                                <ListItemText primary="Graph" />
-                            </ListItem>
-                        <Divider />
+                        <ListItem button onClick = {go_invoice} sx={{backgroundColor: '#81d4fa'}}>
+                            <MonetizationOnIcon/>
+                            <ListItemText primary="Invoices" sx={{position:'relative', right:'-20px'}}/>
+                        </ListItem>
+                        <ListItem button onClick = {go_graph}>
+                            <BarChartIcon/>
+                            <ListItemText primary="Graph" sx={{position:'relative', right:'-20px'}} />
+                        </ListItem>
                         <ListItem button onClick = {go_blacklist}>
-                            <ListItemText primary="Blacklist" />
+                            <BlockIcon/>
+                            <ListItemText primary="Blacklist" sx={{position:'relative', right:'-20px'}}/>
                         </ListItem>
                         </List>
                     </div>
@@ -225,11 +230,9 @@ const File = () => {
                     {false && <div className='End retrieve' style={{position:'relative', top:'130px'}}>
                         <CusButton variant="contained" color="error" onClick = {end_retrieve}>End retrieve</CusButton>
                     </div>}
-                    <div className='logout' style={{position:'relative', top:'700px'}}>
-                        <CusButton variant="contained" onClick = {go_logout}>Log out</CusButton>
-                    </div>
                 </Box>
             </div>
+
         </div>
         );
 
