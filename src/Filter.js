@@ -17,8 +17,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Error from './error';
 
 const style = {
     width: '100%',
@@ -54,15 +54,8 @@ const SearchTextField = styled(TextField)({
     const [dateMin, setdateMin] = useState("");
     const [dateMax, setdateMax] = useState("");
     const [seller, setseller] = useState("");
-
-    // useEffect (() =>{
-	// 	const get_files = async () =>{
-	// 		const filesfromserver = await filterfiles()
-	// 		setfiles(filesfromserver)
-	// 	}
-	// get_files()
-
-	// }, [])
+    const [errormessage, setErrorMessage] = useState('');
+    const [errorcount, setErrorCount] = useState(0);
 
     function go_logout(event) {
         window.location.href = ('/');
@@ -79,7 +72,8 @@ const SearchTextField = styled(TextField)({
 
     function filterfiles(event) {
         event.preventDefault();
-        const parameters = localStorage.token+'&sender='+seller+'&time='+dateMin+'&price='+priceMin;
+        var parameters = localStorage.token+'&sender='+seller+'&min_time='+dateMin+'&min_price='+priceMin;
+        parameters += '&max_time='+dateMax+'&max_price='+priceMax;
         const url = 'https://damp-sands-01446.herokuapp.com/list/filenames/filtered?token='+parameters;
         console.log(url)
         const options = {headers : {'Content-type': 'application/json'}}
@@ -91,16 +85,22 @@ const SearchTextField = styled(TextField)({
             
             return data;
         })
-        .catch((err)=>{ })
+        .catch((err)=>{
+            if (err.response) {
+                setErrorMessage(err.response.data["message"])
+                setErrorCount(errorcount + 1)
+            }
+        })
     }
 
-    itemData = []
+    itemData = [];
     for (const x in files) {
         itemData = [...itemData,{title:files[x]}]
     }
 
     return (
         <div className='background' style={{backgroundColor: '#90caf9', height: '100vh', display: 'grid', width: '100%', overflowX:'hidden', overflowY:'hidden', zIndex:0}}>
+        
         <div className='middle_panel' style={{display: 'flex', position:'absolute', alignItems: 'center', justifyContent:'left', left:'420px', top:'190px', zIndex:2}}>
             <div className='filter' style={{position:'absolute', bottom:'460px', zIndex:3}}>
                 <FormGroup>
@@ -118,8 +118,7 @@ const SearchTextField = styled(TextField)({
                 onChange={e => setpriceMin(e.target.value)}
                 />
                 <CusTextField
-                disabled
-                id="filled-disabled"
+                id="filled-search"
                 label="Max"
                 type="number"
                 variant="filled"
@@ -136,8 +135,7 @@ const SearchTextField = styled(TextField)({
                 onChange={e => setdateMin(e.target.value)}
                 />
                 <CusTextField
-                disabled
-                id="filled-disabled"
+                id="filled-search"
                 label="Max"
                 type="Search"
                 variant="filled"
@@ -163,6 +161,7 @@ const SearchTextField = styled(TextField)({
         <div className='right_panel' style={{display: 'flex', position:'absolute', alignItems: 'center', justifyContent:'right', right:'100px', top:'190px', zIndex:1}}>
             <div style={{fontSize: '25px', position:'relative', bottom:'420px', left:'150px', zIndex:3}}>Invoices</div>
             <Box component="span" sx={{width: '50vh', height: '70vh', backgroundColor: 'white', zIndex:1}}>
+            <Error message={errormessage} count={errorcount}/>
             <ImageList sx={{ width: '40vh', height: '50vh', position:'relative', left:'60px', top:'50px'}} cols={5}>
                 {itemData.map((item) => (
                     <ImageListItem key={item.title}>
