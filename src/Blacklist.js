@@ -53,7 +53,7 @@ const Blacklist = () => {
     const [name, setName] = useState('');
     var name_unblock = '';
     const [list, setList] = useState([]);
-    const [is_spam, setIs_spam] = useState(false);
+    const [is_spam, setIs_spam] = useState(true);
 
     function go_logout(event) {
         window.location.href = ('/')
